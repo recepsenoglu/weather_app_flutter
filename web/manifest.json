@@ -1,6 +1,6 @@
 {
-    "name": "wheather_app_flutter",
-    "short_name": "wheather_app_flutter",
+    "name": "weather_app_flutter",
+    "short_name": "weather_app_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
