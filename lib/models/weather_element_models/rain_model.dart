@@ -2,6 +2,12 @@ class RainModel {
   final double? oneHour;
   final double? threeHours;
 
+  String? get rainVolume => oneHour != null
+      ? "${oneHour!.toStringAsFixed(1)} mm"
+      : threeHours != null
+          ? "${threeHours!.toStringAsFixed(1)} mm"
+          : null;
+
   RainModel({
     required this.oneHour,
     required this.threeHours,

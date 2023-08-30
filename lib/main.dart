@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app_flutter/utils/app_colors.dart';
 import 'package:weather_app_flutter/utils/app_routes.dart';
 import 'package:weather_app_flutter/utils/app_sizes.dart';
 
@@ -17,8 +18,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Weather app flutter',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: const ColorScheme.light(
+          background: AppColors.backgroundDay,
+          surface: AppColors.containerDay,
+          onBackground: AppColors.textDay,
+          onSurface: AppColors.textDay,
+        ),
         useMaterial3: true,
+        textTheme: const TextTheme(
+          headlineLarge: TextStyle(
+            color: AppColors.textDay,
+            fontWeight: FontWeight.w600,
+          ),
+          headlineMedium: TextStyle(
+            color: AppColors.textDay,
+            fontWeight: FontWeight.w500,
+          ),
+          headlineSmall: TextStyle(
+            color: AppColors.textDay,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       ),
       navigatorKey: AppRoutes.navigatorKey,
       initialRoute: AppRoutes.initialRoute,

@@ -11,7 +11,7 @@ class WeatherModel {
     required this.icon,
   });
 
-  String get iconUrl => 'http://openweathermap.org/img/w/$icon.png';
+  String get iconUrl => 'http://openweathermap.org/img/wn/$icon@4x.png';
   
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     return WeatherModel(

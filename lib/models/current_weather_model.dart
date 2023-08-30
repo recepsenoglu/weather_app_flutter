@@ -1,10 +1,12 @@
+import 'package:weather_app_flutter/models/info_model.dart';
 import 'package:weather_app_flutter/models/weather_element_models/_exports.dart';
+import 'package:weather_app_flutter/utils/app_images.dart';
 
 class CurrentWeatherModel {
   final CoordModel coord;
   final WeatherModel weather;
   final MainModel main;
-  final int visibility;
+  final int? visibility;
   final WindModel wind;
   final CloudsModel clouds;
   final RainModel? rain;
@@ -13,6 +15,56 @@ class CurrentWeatherModel {
   final SysModel? sys;
   final int? timezone;
   final int? cod;
+
+  List<InfoModel> get info {
+    List<InfoModel> infoList = [
+      InfoModel(
+        title: "Humidity",
+        value: main.humidityString,
+        image: AppImages.humidity.assetName,
+      ),
+      InfoModel(
+        title: "Wind",
+        value: wind.speedString,
+        image: AppImages.wind.assetName,
+      ),
+    ];
+
+    if (rain?.rainVolume != null) {
+      infoList.insert(
+        0,
+        InfoModel(
+          title: "Rain",
+          value: rain!.rainVolume!,
+          image: AppImages.rain.assetName,
+        ),
+      );
+    }
+
+    if (snow?.snowVolume != null) {
+      infoList.insert(
+        0,
+        InfoModel(
+          title: "Snow",
+          value: snow!.snowVolume!,
+          image: AppImages.snow.assetName,
+        ),
+      );
+    }
+
+    if ((visibility ?? 10000) < 10000) {
+      infoList.insert(
+        0,
+        InfoModel(
+          title: "Visibility",
+          value: "${((visibility ?? 10000) / 1000).toStringAsFixed(0)} km",
+          image: AppImages.visibility.assetName,
+        ),
+      );
+    }
+
+    return infoList;
+  }
 
   CurrentWeatherModel({
     required this.coord,
@@ -35,7 +87,7 @@ class CurrentWeatherModel {
       weather:
           WeatherModel.fromJson(json['weather'][0] as Map<String, dynamic>),
       main: MainModel.fromJson(json['main'] as Map<String, dynamic>),
-      visibility: json['visibility'] as int,
+      visibility: (json['visibility'] as int?) ?? 10000,
       wind: WindModel.fromJson(json['wind'] as Map<String, dynamic>),
       clouds: CloudsModel.fromJson(json['clouds'] as Map<String, dynamic>),
       rain: json.containsKey('rain')

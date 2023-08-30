@@ -10,7 +10,6 @@ class LocationModel {
     this.placemark,
   });
 
-  String? get city => placemark?.administrativeArea;
-
-  
+  String? get city => placemark?.administrativeArea ?? placemark?.country;
+  String? get district => placemark?.subAdministrativeArea ?? city;
 }
