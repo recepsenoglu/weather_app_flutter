@@ -28,48 +28,52 @@ class WeatherScreen extends StatelessWidget {
             triggerMode: RefreshIndicatorTriggerMode.onEdge,
             onRefresh: provider.refresh,
             child: Scaffold(
-              drawer: Padding(
-                padding: EdgeInsets.only(top: AppSizes.getHeight(0.07)),
-                child: Drawer(
-                  elevation: 0,
-                  width: AppSizes.getWidth(0.8),
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                  surfaceTintColor: Theme.of(context).colorScheme.surface,
-                  child: ListView(
-                    padding: AppSizes.getSymmetricPadding(0.02, 0.01),
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            iconSize: AppSizes.getWidth(0.06),
-                            icon: const Icon(Icons.settings_outlined),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // drawer: Padding(
+              //   padding: EdgeInsets.only(top: AppSizes.getHeight(0.07)),
+              //   child: Drawer(
+              //     elevation: 0,
+              //     width: AppSizes.getWidth(0.8),
+              //     backgroundColor: Theme.of(context).colorScheme.surface,
+              //     surfaceTintColor: Theme.of(context).colorScheme.surface,
+              //     child: ListView(
+              //       padding: AppSizes.getSymmetricPadding(0.02, 0.01),
+              //       children: [
+              //         Row(
+              //           mainAxisAlignment: MainAxisAlignment.end,
+              //           children: [
+              //             IconButton(
+              //               iconSize: AppSizes.getWidth(0.06),
+              //               icon: const Icon(Icons.settings_outlined),
+              //               onPressed: () {
+              //                 Navigator.pop(context);
+              //               },
+              //             ),
+              //           ],
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+
               appBar: AppBar(
                 elevation: 0,
-                toolbarHeight: AppSizes.getHeight(0.1),
+                // toolbarHeight: AppSizes.getHeight(0.1),
                 systemOverlayStyle: SystemUiOverlayStyle.dark,
                 backgroundColor: Theme.of(context).colorScheme.background,
                 leadingWidth: AppSizes.getWidth(0.2),
-                leading: Builder(
-                  builder: (context) {
-                    return IconButton(
-                      iconSize: AppSizes.getWidth(0.08),
-                      icon: const Icon(Icons.menu_rounded),
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                    );
-                  },
+                leading: Padding(
+                  padding: AppSizes.getHorizontalPadding(0.04),
+                  child: Builder(
+                    builder: (context) {
+                      return IconButton(
+                        iconSize: AppSizes.getWidth(0.06),
+                        icon: const Icon(Icons.menu_rounded),
+                        onPressed: () {
+                          // Scaffold.of(context).openDrawer();
+                        },
+                      );
+                    },
+                  ),
                 ),
                 actions: [
                   if (!provider.loading)
@@ -82,254 +86,334 @@ class WeatherScreen extends StatelessWidget {
                     ),
                 ],
               ),
-              body: SingleChildScrollView(
-                padding: AppSizes.getSymmetricPadding(0.03, 0.00),
-                physics: const ClampingScrollPhysics(),
-                child: Column(
-                  children: [
-                    if (provider.loading)
-                      const LoadingWidget()
-                    else if (provider.locationCouldNotGet)
-                      NoLocationWidget(
-                        errorText: provider.errText,
-                        onRefresh: provider.refresh,
-                      )
-                    else if (provider.hasCurrentWeather)
-                      Column(
+              body: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  if (provider.initialized)
+                    SingleChildScrollView(
+                      padding: AppSizes.getSymmetricPadding(0.03, 0.00),
+                      physics: const ClampingScrollPhysics(),
+                      child: Column(
                         children: [
-                          CurrentWeather(
-                            tempurature:
-                                provider.currentWeatherModel!.main.temperature,
-                            description:
-                                provider.currentWeatherModel!.weather.main,
-                            location: provider.district,
-                            minMaxTemp: provider
-                                .currentWeatherModel!.main.minMaxTemperature,
-                            feelsLikeTemp: provider
-                                .currentWeatherModel!.main.feelsLikeTemperature,
-                            iconUrl:
-                                provider.currentWeatherModel!.weather.iconUrl,
-                          ),
-                          SizedBox(height: AppSizes.getHeight(0.04)),
-                          if (provider.hasHourlyForecast)
-                            StyledBox(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${provider.currentWeatherModel?.weather.description.capitalizeFirst()}. ${provider.currentWeatherModel?.main.lowestTemperature}",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium!
-                                        .copyWith(
-                                          fontSize: AppSizes.getWidth(0.04),
-                                        ),
-                                  ),
-                                  Divider(
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
-                                    height: AppSizes.getHeight(0.03),
-                                    thickness: 0.3,
-                                  ),
-                                  SizedBox(
-                                    height: AppSizes.getHeight(0.13),
-                                    child: ListView.builder(
-                                      itemCount:
-                                          provider.hourlyForecastModel != null
-                                              ? 12
-                                              : 0,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index) {
-                                        final HourlyForecastItemModel item =
-                                            provider.hourlyForecastModel!
-                                                .list[index];
-                                        return Padding(
-                                          padding:
-                                              AppSizes.getHorizontalPadding(
-                                                  0.015),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                item.dt.getHourFromTimestamp(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineSmall!
-                                                    .copyWith(
-                                                      fontSize:
-                                                          AppSizes.getWidth(
-                                                              0.03),
-                                                    ),
-                                              ),
-                                              Image.network(
-                                                item.weather.iconUrl,
-                                                width: AppSizes.getWidth(0.1),
-                                                height: AppSizes.getWidth(0.1),
-                                              ),
-                                              Text(
-                                                item.main.temperatureFixed,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineMedium!
-                                                    .copyWith(
-                                                      fontSize:
-                                                          AppSizes.getWidth(
-                                                              0.035),
-                                                    ),
-                                              ),
-                                              SizedBox(
-                                                  height:
-                                                      AppSizes.getHeight(0.02)),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    item.pop < 0.3
-                                                        ? Icons
-                                                            .water_drop_outlined
-                                                        : Icons.water_drop,
-                                                    size:
-                                                        AppSizes.getWidth(0.03),
-                                                    color: Colors.lightBlue,
-                                                  ),
-                                                  Text(
-                                                    item.popPercent,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headlineSmall!
-                                                        .copyWith(
-                                                          fontSize:
-                                                              AppSizes.getWidth(
-                                                                  0.03),
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          SunriseSunsetInfo(
-                            title:
-                                provider.currentWeatherModel!.sys!.getSunTitle,
-                            time: provider.currentWeatherModel!.sys!.getSunTime,
-                          ),
-                          if (provider.hasDailyForecast)
-                            StyledBox(
-                              child: Container(
-                                height: AppSizes.getHeight(0.3),
-                                padding:
-                                    AppSizes.getSymmetricPadding(0.02, 0.005),
-                                child: ListView.separated(
-                                  itemCount:
-                                      provider.dailyForecastModel!.list.length,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  separatorBuilder: (context, index) {
-                                    return SizedBox(
-                                        height: AppSizes.getHeight(0.012));
-                                  },
-                                  itemBuilder: (context, index) {
-                                    final DailyForecastItemModel item = provider
-                                        .dailyForecastModel!.list[index];
-                                    return Row(
+                          if (provider.locationCouldNotGet)
+                            NoLocationWidget(
+                              errorText: provider.errText,
+                              onRefresh: provider.refresh,
+                            )
+                          else if (provider.hasCurrentWeather)
+                            Column(
+                              children: [
+                                CurrentWeather(
+                                  tempurature: provider
+                                      .currentWeatherModel!.main.temperature,
+                                  description: provider
+                                      .currentWeatherModel!.weather.main,
+                                  location: provider.district,
+                                  minMaxTemp: provider.currentWeatherModel!.main
+                                      .minMaxTemperature,
+                                  feelsLikeTemp: provider.currentWeatherModel!
+                                      .main.feelsLikeTemperature,
+                                  iconUrl: provider
+                                      .currentWeatherModel!.weather.iconUrl,
+                                ),
+                                SizedBox(height: AppSizes.getHeight(0.04)),
+                                if (provider.hasHourlyForecast)
+                                  StyledBox(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        /// Day name
                                         Text(
-                                          item.day,
+                                          "${provider.currentWeatherModel?.weather.description.capitalizeFirst()}. ${provider.currentWeatherModel?.main.lowestTemperature}",
                                           style: Theme.of(context)
                                               .textTheme
-                                              .headlineLarge!
-                                              .copyWith(
-                                                fontSize:
-                                                    AppSizes.getWidth(0.042),
-                                              ),
-                                        ),
-                                        const Spacer(),
-
-                                        /// Rain percent
-                                        SizedBox(
-                                          width: AppSizes.getWidth(0.14),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                item.pop < 25
-                                                    ? Icons.water_drop_outlined
-                                                    : Icons.water_drop,
-                                                size: AppSizes.getWidth(0.03),
-                                                color: Colors.lightBlue,
-                                              ),
-                                              SizedBox(
-                                                  width:
-                                                      AppSizes.getWidth(0.01)),
-                                              Text(
-                                                item.popPercent,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineSmall!
-                                                    .copyWith(
-                                                      fontSize:
-                                                          AppSizes.getWidth(
-                                                              0.03),
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-
-                                        /// Day icon
-                                        Image.network(
-                                          item.dayIconUrl,
-                                          width: AppSizes.getWidth(0.08),
-                                          height: AppSizes.getWidth(0.08),
-                                        ),
-
-                                        /// Night icon
-                                        Image.network(
-                                          item.nightIconUrl,
-                                          width: AppSizes.getWidth(0.08),
-                                          height: AppSizes.getWidth(0.08),
-                                        ),
-
-                                        SizedBox(
-                                            width: AppSizes.getWidth(0.02)),
-
-                                        /// Min-Max temp
-                                        Text(
-                                          provider.currentWeatherModel!.main
-                                              .minMaxTemperature
-                                              .replaceAll(" /", ""),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineLarge!
+                                              .headlineMedium!
                                               .copyWith(
                                                 fontSize:
                                                     AppSizes.getWidth(0.04),
                                               ),
                                         ),
+                                        Divider(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                          height: AppSizes.getHeight(0.03),
+                                          thickness: 0.3,
+                                        ),
+                                        SizedBox(
+                                          height: AppSizes.getHeight(0.14),
+                                          child: ListView.builder(
+                                            itemCount:
+                                                provider.hourlyForecastModel !=
+                                                        null
+                                                    ? 12
+                                                    : 0,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) {
+                                              final HourlyForecastItemModel
+                                                  item = provider
+                                                      .hourlyForecastModel!
+                                                      .list[index];
+                                              return Padding(
+                                                padding: AppSizes
+                                                    .getHorizontalPadding(
+                                                        0.015),
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      item.dt
+                                                          .getHourFromTimestamp(),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headlineSmall!
+                                                          .copyWith(
+                                                            fontSize: AppSizes
+                                                                .getWidth(0.03),
+                                                          ),
+                                                    ),
+                                                    Image.network(
+                                                      item.weather.iconUrl,
+                                                      width: AppSizes.getWidth(
+                                                          0.1),
+                                                      height: AppSizes.getWidth(
+                                                          0.1),
+                                                    ),
+                                                    Text(
+                                                      item.main
+                                                          .temperatureFixed,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headlineMedium!
+                                                          .copyWith(
+                                                            fontSize: AppSizes
+                                                                .getWidth(
+                                                                    0.035),
+                                                          ),
+                                                    ),
+                                                    SizedBox(
+                                                        height:
+                                                            AppSizes.getHeight(
+                                                                0.02)),
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          item.pop < 0.3
+                                                              ? Icons
+                                                                  .water_drop_outlined
+                                                              : Icons
+                                                                  .water_drop,
+                                                          size:
+                                                              AppSizes.getWidth(
+                                                                  0.03),
+                                                          color:
+                                                              Colors.lightBlue,
+                                                        ),
+                                                        Text(
+                                                          item.popPercent,
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .headlineSmall!
+                                                              .copyWith(
+                                                                fontSize: AppSizes
+                                                                    .getWidth(
+                                                                        0.03),
+                                                              ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
                                       ],
-                                    );
-                                  },
+                                    ),
+                                  ),
+                                SunriseSunsetInfo(
+                                  title: provider
+                                      .currentWeatherModel!.sys!.getSunTitle,
+                                  time: provider
+                                      .currentWeatherModel!.sys!.getSunTime,
                                 ),
-                              ),
-                            ),
-                          InfoGrid(
-                            infoList: provider.currentWeatherModel?.info,
-                            sunrise: provider.currentWeatherModel?.sys?.sunrise!
-                                .getHourFromTimestamp(),
-                            sunset: provider.currentWeatherModel?.sys?.sunset!
-                                .getHourFromTimestamp(),
-                          ),
+                                if (provider.hasDailyForecast)
+                                  StyledBox(
+                                    child: Container(
+                                      height: AppSizes.getHeight(0.3),
+                                      padding: AppSizes.getSymmetricPadding(
+                                          0.02, 0.005),
+                                      child: ListView.separated(
+                                        itemCount: provider
+                                            .dailyForecastModel!.list.length,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        separatorBuilder: (context, index) {
+                                          return SizedBox(
+                                              height:
+                                                  AppSizes.getHeight(0.012));
+                                        },
+                                        itemBuilder: (context, index) {
+                                          final DailyForecastItemModel item =
+                                              provider.dailyForecastModel!
+                                                  .list[index];
+                                          return Row(
+                                            children: [
+                                              /// Day name
+                                              Text(
+                                                item.day,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headlineLarge!
+                                                    .copyWith(
+                                                      fontSize:
+                                                          AppSizes.getWidth(
+                                                              0.042),
+                                                    ),
+                                              ),
+                                              const Spacer(),
+
+                                              /// Rain percent
+                                              SizedBox(
+                                                width: AppSizes.getWidth(0.14),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      item.pop < 25
+                                                          ? Icons
+                                                              .water_drop_outlined
+                                                          : Icons.water_drop,
+                                                      size: AppSizes.getWidth(
+                                                          0.03),
+                                                      color: Colors.lightBlue,
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            AppSizes.getWidth(
+                                                                0.01)),
+                                                    Text(
+                                                      item.popPercent,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headlineSmall!
+                                                          .copyWith(
+                                                            fontSize: AppSizes
+                                                                .getWidth(0.03),
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+                                              /// Day icon
+                                              Image.network(
+                                                item.dayIconUrl,
+                                                width: AppSizes.getWidth(0.08),
+                                                height: AppSizes.getWidth(0.08),
+                                              ),
+
+                                              /// Night icon
+                                              Image.network(
+                                                item.nightIconUrl,
+                                                width: AppSizes.getWidth(0.08),
+                                                height: AppSizes.getWidth(0.08),
+                                              ),
+
+                                              SizedBox(
+                                                  width:
+                                                      AppSizes.getWidth(0.02)),
+
+                                              /// Min-Max temp
+                                              Text(
+                                                provider.currentWeatherModel!
+                                                    .main.minMaxTemperature
+                                                    .replaceAll(" /", ""),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headlineLarge!
+                                                    .copyWith(
+                                                      fontSize:
+                                                          AppSizes.getWidth(
+                                                              0.04),
+                                                    ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                InfoGrid(
+                                  infoList: provider.currentWeatherModel?.info,
+                                  sunrise: provider
+                                      .currentWeatherModel?.sys?.sunrise!
+                                      .getHourFromTimestamp(),
+                                  sunset: provider
+                                      .currentWeatherModel?.sys?.sunset!
+                                      .getHourFromTimestamp(),
+                                ),
+                              ],
+                            )
+                          else
+                            DataCouldNotGet(
+                              onRefresh: provider.refresh,
+                            )
                         ],
                       ),
-                  ],
-                ),
+                    ),
+                  if (!provider.initialized)
+                    Positioned(
+                      top: AppSizes.getHeight(0.08),
+                      child: Container(
+                        width: AppSizes.getWidth(0.09),
+                        height: AppSizes.getWidth(0.09),
+                        padding: AppSizes.getPadding(0.015),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class DataCouldNotGet extends StatelessWidget {
+  const DataCouldNotGet({super.key, required this.onRefresh});
+
+  final VoidCallback onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: AppSizes.getHorizontalPadding(0.04)
+          .copyWith(top: AppSizes.getHeight(0.35)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            AppStrings.weatherDataCouldNotGet,
+            style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  fontSize: AppSizes.getWidth(0.04),
+                ),
+          ),
+          const SizedBox(height: 10),
+          CustomButton(
+            text: AppStrings.refresh,
+            onPressed: onRefresh,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+        ],
       ),
     );
   }
@@ -623,6 +707,7 @@ class NoLocationWidget extends StatelessWidget {
           CustomButton(
             text: AppStrings.refresh,
             onPressed: onRefresh,
+            color: Theme.of(context).colorScheme.tertiary,
           ),
         ],
       ),

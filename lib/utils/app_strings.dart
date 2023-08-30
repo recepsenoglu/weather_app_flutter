@@ -9,6 +9,9 @@ class AppStrings {
   static const cancel = 'Cancel';
   static const refresh = 'Refresh';
 
+  static const weatherDataCouldNotGet =
+      'Weather data could not get. Please try again later';
+
   static const riseAndShine = 'Rise and Shine';
   static const dontMissTheSunset = 'Don\'t miss the sunset';
 

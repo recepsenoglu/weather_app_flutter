@@ -21,6 +21,7 @@ class WeatherScreenProvider with ChangeNotifier {
   String errText = '';
 
   bool loading = true;
+  bool initialized = false;
   String get district => _locationModel!.district ?? 'World';
   bool get locationCouldNotGet => _locationModel == null;
 
@@ -66,6 +67,7 @@ class WeatherScreenProvider with ChangeNotifier {
       _locationModel = await _locationService.init();
     } catch (e) {
       log('error runtime type: ${e.runtimeType}'); // String
+      log(e.toString()); // LocationServiceDisabledException
 
       if (e.runtimeType == LocationServiceDisabledException) {
         errText = 'Location service disabled';
@@ -126,6 +128,7 @@ class WeatherScreenProvider with ChangeNotifier {
   }
 
   Future<void> _init({bool customLocation = false, bool first = false}) async {
+    notifyListeners();
     if (first) _apiService = await ApiService.init();
 
     if (!customLocation) await _getLocation();
@@ -134,6 +137,7 @@ class WeatherScreenProvider with ChangeNotifier {
     await _getDailyForecast();
 
     loading = false;
+    initialized = true;
     notifyListeners();
   }
 }
