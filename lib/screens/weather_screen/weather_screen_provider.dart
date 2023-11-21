@@ -112,6 +112,8 @@ class WeatherScreenProvider with ChangeNotifier {
       heading: _locationModel!.position.heading,
       speed: _locationModel!.position.speed,
       speedAccuracy: _locationModel!.position.speedAccuracy,
+      altitudeAccuracy: _locationModel!.position.altitudeAccuracy,
+      headingAccuracy: _locationModel!.position.headingAccuracy,
     );
 
     _locationModel!.placemark =
