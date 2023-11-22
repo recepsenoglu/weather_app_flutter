@@ -2,12 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:weather_app_flutter/models/current_weather_model.dart';
-import 'package:weather_app_flutter/models/daily_forecast_model.dart';
-import 'package:weather_app_flutter/models/hourly_forecast_model.dart';
-import 'package:weather_app_flutter/models/location_model.dart';
-import 'package:weather_app_flutter/services/api_service.dart';
-import 'package:weather_app_flutter/services/location_service.dart';
+
+import '../../models/current_weather_model.dart';
+import '../../models/daily_forecast_model.dart';
+import '../../models/hourly_forecast_model.dart';
+import '../../models/location_model.dart';
+import '../../services/api_service.dart';
+import '../../services/location_service.dart';
 
 class WeatherScreenProvider with ChangeNotifier {
   final LocationService _locationService = LocationService();
@@ -28,6 +29,45 @@ class WeatherScreenProvider with ChangeNotifier {
   bool get hasCurrentWeather => currentWeatherModel != null;
   bool get hasHourlyForecast => hourlyForecastModel != null;
   bool get hasDailyForecast => dailyForecastModel != null;
+
+  WeatherScreenProvider() {
+    _init(initApiService: true);
+  }
+
+  Future<void> _init({
+    bool skipLocation = false,
+    bool initApiService = false,
+  }) async {
+    if (initApiService) _apiService = await ApiService.init();
+    if (!skipLocation) await _getLocation();
+    await _getCurrentWeather();
+    await _getHourlyForecast();
+    await _getDailyForecast();
+    initialized = true;
+    _setLoading(false);
+  }
+
+  Future<void> _getLocation() async {
+    try {
+      _locationModel = await _locationService.init();
+    } catch (e) {
+      log(
+        'Error occurred while getting location data.',
+        name: 'WeatherScreenProvider._getLocation',
+        error: e,
+      );
+      errText = e.toString();
+
+      // if (e.runtimeType == PermissionDeniedException) {
+      //   errText = (e as PermissionDeniedException).message ?? '';
+      // } else if (e.runtimeType == LocationServiceDisabledException) {
+      //   errText = e.toString();
+      // } else {
+      //   errText = 'Unknown error';
+      // }
+      notifyListeners();
+    }
+  }
 
   Future<void> _getDailyForecast() async {
     try {
@@ -62,33 +102,10 @@ class WeatherScreenProvider with ChangeNotifier {
     }
   }
 
-  Future<void> _getLocation() async {
-    try {
-      _locationModel = await _locationService.init();
-    } catch (e) {
-      log('error runtime type: ${e.runtimeType}'); // String
-      log(e.toString()); // LocationServiceDisabledException
-
-      if (e.runtimeType == LocationServiceDisabledException) {
-        errText = 'Location service disabled';
-      } else if (e.runtimeType == PermissionDeniedException) {
-        errText = (e as PermissionDeniedException).message ?? '';
-      } else {
-        errText = 'Unknown error';
-      }
-      log(errText);
-      notifyListeners();
-    }
-  }
-
   Future<void> refresh() async {
-    loading = true;
-    notifyListeners();
-
+    _setLoading(true);
     await _init();
-
-    loading = false;
-    notifyListeners();
+    _setLoading(false);
   }
 
   Future<void> changeLocation() async {
@@ -115,31 +132,14 @@ class WeatherScreenProvider with ChangeNotifier {
       altitudeAccuracy: _locationModel!.position.altitudeAccuracy,
       headingAccuracy: _locationModel!.position.headingAccuracy,
     );
-
     _locationModel!.placemark =
         await LocationService.getPlacemarkFromLatLng(latitude, longitude);
-
-    loading = true;
-    notifyListeners();
-
-    _init(customLocation: true);
+    _setLoading(true);
+    _init(skipLocation: true);
   }
 
-  WeatherScreenProvider() {
-    _init(first: true);
-  }
-
-  Future<void> _init({bool customLocation = false, bool first = false}) async {
-    notifyListeners();
-    if (first) _apiService = await ApiService.init();
-
-    if (!customLocation) await _getLocation();
-    await _getCurrentWeather();
-    await _getHourlyForecast();
-    await _getDailyForecast();
-
-    loading = false;
-    initialized = true;
+  void _setLoading(bool value) {
+    loading = value;
     notifyListeners();
   }
 }

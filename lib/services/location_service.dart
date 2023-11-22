@@ -29,7 +29,18 @@ class LocationService {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return Future.error(const LocationServiceDisabledException());
+      bool? openSettings = await AppDialogs.showConfirmationDialog(
+        title: AppStrings.permissionDenied,
+        message: AppStrings.openSettingsDescription,
+        positiveButtonText: AppStrings.openSettings,
+        negativeButtonText: AppStrings.cancel,
+      );
+      if (openSettings == true) {
+        await openLocationSettings();
+        return Future.error(const LocationServiceDisabledException());
+      } else {
+        return Future.error(const LocationServiceDisabledException());
+      }
     }
 
     permission = await Geolocator.checkPermission();

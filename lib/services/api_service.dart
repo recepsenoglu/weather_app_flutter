@@ -27,8 +27,13 @@ class ApiService {
       responseData = await _getData(url);
       return responseData;
     } catch (e) {
-      log(e.toString());
-      return null;
+      log(
+        "Error occurred while getting daily forecast data.",
+        name: "ApiService.getDailyForecast",
+        stackTrace: StackTrace.current,
+        error: e,
+      );
+      throw Exception(e);
     }
   }
 
@@ -44,8 +49,13 @@ class ApiService {
       responseData = await _getData(url);
       return HourlyForecastModel.fromJson(responseData);
     } catch (e) {
-      log(e.toString());
-      return null;
+      log(
+        "Error occurred while getting hourly forecast data.",
+        name: "ApiService.getHourlyForecast",
+        stackTrace: StackTrace.current,
+        error: e,
+      );
+      throw Exception(e);
     }
   }
 
@@ -61,8 +71,13 @@ class ApiService {
       responseData = await _getData(url);
       return CurrentWeatherModel.fromJson(responseData);
     } catch (e) {
-      log(e.toString());
-      return null;
+      log(
+        "Error occurred while getting current weather data.",
+        name: "ApiService.getCurrentWeather",
+        stackTrace: StackTrace.current,
+        error: e,
+      );
+      throw Exception(e);
     }
   }
 
@@ -72,7 +87,7 @@ class ApiService {
     if (response.statusCode == 200) {
       return response.data;
     } else {
-      throw Exception('Failed to load data');
+      throw Exception(response.statusMessage);
     }
   }
 

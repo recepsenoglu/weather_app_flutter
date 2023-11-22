@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_app_flutter/models/daily_forecast_model.dart';
-import 'package:weather_app_flutter/models/hourly_forecast_model.dart';
-import 'package:weather_app_flutter/models/info_model.dart';
-import 'package:weather_app_flutter/screens/weather_screen/weather_screen_provider.dart';
-import 'package:weather_app_flutter/utils/app_images.dart';
-import 'package:weather_app_flutter/utils/app_sizes.dart';
-import 'package:weather_app_flutter/utils/app_strings.dart';
-import 'package:weather_app_flutter/utils/extensions.dart';
-import 'package:weather_app_flutter/widgets/custom_button.dart';
+
+import '../../models/daily_forecast_model.dart';
+import '../../models/hourly_forecast_model.dart';
+import '../../models/info_model.dart';
+import '../../utils/app_images.dart';
+import '../../utils/app_sizes.dart';
+import '../../utils/app_strings.dart';
+import '../../utils/extensions.dart';
+import '../../widgets/custom_button.dart';
+import 'weather_screen_provider.dart';
 
 class WeatherScreen extends StatelessWidget {
   const WeatherScreen({super.key});
@@ -361,8 +362,9 @@ class WeatherScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                  if (!provider.initialized)
-                    Positioned(
+                  Visibility(
+                    visible: !provider.initialized,
+                    child: Positioned(
                       top: AppSizes.getHeight(0.08),
                       child: Container(
                         width: AppSizes.getWidth(0.09),
@@ -378,6 +380,7 @@ class WeatherScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                  ),
                 ],
               ),
             ),
