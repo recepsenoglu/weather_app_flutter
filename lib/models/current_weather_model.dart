@@ -1,6 +1,6 @@
-import 'package:weather_app_flutter/models/info_model.dart';
-import 'package:weather_app_flutter/models/weather_element_models/_exports.dart';
-import 'package:weather_app_flutter/utils/app_images.dart';
+import '../utils/app_images.dart';
+import 'info_model.dart';
+import 'weather_element_models/_exports.dart';
 
 class CurrentWeatherModel {
   final CoordModel coord;

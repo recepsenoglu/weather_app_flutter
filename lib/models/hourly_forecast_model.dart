@@ -1,4 +1,4 @@
-import 'package:weather_app_flutter/models/weather_element_models/_exports.dart';
+import 'weather_element_models/_exports.dart';
 
 class HourlyForecastModel {
   final int cnt;

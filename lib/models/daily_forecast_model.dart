@@ -1,5 +1,5 @@
-import 'package:weather_app_flutter/models/hourly_forecast_model.dart';
-import 'package:weather_app_flutter/utils/extensions.dart';
+import '../utils/extensions.dart';
+import 'hourly_forecast_model.dart';
 
 class DailyForecastModel {
   final List<DailyForecastItemModel> list;

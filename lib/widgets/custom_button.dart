@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_app_flutter/utils/app_colors.dart';
+
+import '../utils/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({

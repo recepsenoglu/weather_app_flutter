@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:weather_app_flutter/models/location_model.dart';
-import 'package:weather_app_flutter/utils/app_dialogs.dart';
-import 'package:weather_app_flutter/utils/app_strings.dart';
+
+import '../models/location_model.dart';
+import '../utils/app_dialogs.dart';
+import '../utils/app_strings.dart';
 
 class LocationService {
   Future<LocationModel?> init() async {

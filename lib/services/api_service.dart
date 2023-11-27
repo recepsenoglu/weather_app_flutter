@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:weather_app_flutter/models/current_weather_model.dart';
-import 'package:weather_app_flutter/models/hourly_forecast_model.dart';
+
+import '../models/current_weather_model.dart';
+import '../models/hourly_forecast_model.dart';
 
 class ApiService {
   late String apiKey;

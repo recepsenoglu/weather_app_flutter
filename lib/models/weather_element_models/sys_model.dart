@@ -1,5 +1,5 @@
-import 'package:weather_app_flutter/utils/app_strings.dart';
-import 'package:weather_app_flutter/utils/extensions.dart';
+import '../../utils/app_strings.dart';
+import '../../utils/extensions.dart';
 
 class SysModel {
   final int? type;

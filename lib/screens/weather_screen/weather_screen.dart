@@ -58,35 +58,39 @@ class WeatherScreen extends StatelessWidget {
 
               appBar: AppBar(
                 elevation: 0,
-                // toolbarHeight: AppSizes.getHeight(0.1),
-                systemOverlayStyle: SystemUiOverlayStyle.dark,
+                systemOverlayStyle:
+                    Theme.of(context).brightness == Brightness.light
+                        ? SystemUiOverlayStyle.dark
+                        : SystemUiOverlayStyle.light,
                 backgroundColor: Theme.of(context).colorScheme.background,
+                toolbarHeight: 0,
                 leadingWidth: AppSizes.getWidth(0.2),
-                leading: Padding(
-                  padding: AppSizes.getHorizontalPadding(0.04),
-                  child: Builder(
-                    builder: (context) {
-                      return IconButton(
-                        iconSize: AppSizes.getWidth(0.06),
-                        icon: const Icon(Icons.menu_rounded),
-                        onPressed: () {
-                          // Scaffold.of(context).openDrawer();
-                        },
-                      );
-                    },
-                  ),
-                ),
-                actions: [
-                  if (!provider.loading)
-                    IconButton(
-                      iconSize: AppSizes.getWidth(0.08),
-                      icon: const Icon(Icons.not_listed_location_rounded),
-                      onPressed: () {
-                        provider.changeLocation();
-                      },
-                    ),
-                ],
+                // leading: Padding(
+                //   padding: AppSizes.getHorizontalPadding(0.04),
+                //   child: Builder(
+                //     builder: (context) {
+                //       return IconButton(
+                //         iconSize: AppSizes.getWidth(0.06),
+                //         icon: const Icon(Icons.menu_rounded),
+                //         onPressed: () {
+                //           // Scaffold.of(context).openDrawer();
+                //         },
+                //       );
+                //     },
+                //   ),
+                // ),
+                // actions: [
+                //   if (!provider.loading)
+                //     IconButton(
+                //       iconSize: AppSizes.getWidth(0.08),
+                //       icon: const Icon(Icons.not_listed_location_rounded),
+                //       onPressed: () {
+                //         provider.changeLocation();
+                //       },
+                //     ),
+                // ],
               ),
+
               body: Stack(
                 alignment: Alignment.topCenter,
                 children: [
@@ -104,6 +108,7 @@ class WeatherScreen extends StatelessWidget {
                           else if (provider.hasCurrentWeather)
                             Column(
                               children: [
+                                SizedBox(height: AppSizes.getHeight(0.06)),
                                 CurrentWeather(
                                   tempurature: provider
                                       .currentWeatherModel!.main.temperature,
@@ -356,9 +361,7 @@ class WeatherScreen extends StatelessWidget {
                               ],
                             )
                           else
-                            DataCouldNotGet(
-                              onRefresh: provider.refresh,
-                            )
+                            DataCouldNotGet(onRefresh: provider.refresh)
                         ],
                       ),
                     ),
