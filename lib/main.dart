@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     AppSizes.init(context);
     return MaterialApp(
-      title: 'Weather app flutter',
+      title: 'Weather Forecast',
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
       themeMode: AppThemes.themeMode,

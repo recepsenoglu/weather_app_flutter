@@ -58,13 +58,6 @@ class WeatherScreenProvider with ChangeNotifier {
       );
       errText = e.toString();
 
-      // if (e.runtimeType == PermissionDeniedException) {
-      //   errText = (e as PermissionDeniedException).message ?? '';
-      // } else if (e.runtimeType == LocationServiceDisabledException) {
-      //   errText = e.toString();
-      // } else {
-      //   errText = 'Unknown error';
-      // }
       notifyListeners();
     }
   }
