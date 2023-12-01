@@ -619,6 +619,7 @@ class InfoGrid extends StatelessWidget {
                     AppImages.sun.assetName,
                     width: AppSizes.getWidth(0.12),
                     height: AppSizes.getWidth(0.12),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ],
               ),
@@ -652,6 +653,7 @@ class InfoBox extends StatelessWidget {
             image,
             width: AppSizes.getWidth(0.09),
             height: AppSizes.getWidth(0.09),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
           SizedBox(height: AppSizes.getHeight(0.015)),
           Text(
