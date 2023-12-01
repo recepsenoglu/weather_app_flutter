@@ -25,6 +25,7 @@ class WeatherScreenProvider with ChangeNotifier {
   bool initialized = false;
   String get district => _locationModel!.district ?? 'World';
   bool get locationCouldNotGet => _locationModel == null;
+  bool get hasError => !hasCurrentWeather;
 
   bool get hasCurrentWeather => currentWeatherModel != null;
   bool get hasHourlyForecast => hourlyForecastModel != null;
