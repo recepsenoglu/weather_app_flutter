@@ -19,11 +19,14 @@ class WeatherScreenProvider with ChangeNotifier {
   DailyForecastModel? dailyForecastModel;
 
   LocationModel? _locationModel;
+
   String errText = '';
 
   bool loading = true;
   bool initialized = false;
-  String get district => _locationModel!.district ?? 'World';
+  String get district => _locationModel!.district ?? 'Dimension C-137';
+
+  bool get showLoading => loading && !initialized;
   bool get locationCouldNotGet => _locationModel == null;
   bool get hasError => !hasCurrentWeather;
 
@@ -44,13 +47,14 @@ class WeatherScreenProvider with ChangeNotifier {
     await _getCurrentWeather();
     await _getHourlyForecast();
     await _getDailyForecast();
-    initialized = true;
+    if (!locationCouldNotGet) initialized = true;
     _setLoading(false);
   }
 
   Future<void> _getLocation() async {
     try {
-      _locationModel = await _locationService.init();
+      final LocationModel? locationModel = await _locationService.init();
+      if (locationModel != null) _locationModel = locationModel;
     } catch (e) {
       log(
         'Error occurred while getting location data.',
@@ -58,7 +62,6 @@ class WeatherScreenProvider with ChangeNotifier {
         error: e,
       );
       errText = e.toString();
-
       notifyListeners();
     }
   }

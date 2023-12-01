@@ -48,17 +48,15 @@ class WeatherScreen extends StatelessWidget {
   }
 
   Widget _getBody(WeatherScreenProvider provider) {
-    if (!provider.initialized) return const LoadingWidget();
-
+    if (provider.showLoading) return const LoadingWidget();
+    
     if (provider.locationCouldNotGet) {
       return NoLocationWidget(
           errorText: provider.errText, onRefresh: provider.refresh);
     }
-
     if (provider.hasError) {
       return DataCouldNotGet(onRefresh: provider.refresh);
     }
-
     return _WeatherScreenBody(provider: provider);
   }
 }

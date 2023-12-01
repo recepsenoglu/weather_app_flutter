@@ -3,6 +3,9 @@ class AppStrings {
   static const locationPermissionDenied = 'Location permission denied';
   static const locationPermissionDeniedForever =
       'Location permission denied forever';
+  static const locationServiceDisabled = 'Location Service Disabled';
+  static const openSettingsDescriptionEnableLocationService =
+      'Please open settings and enable location service to use this feature';
   static const locationDescription =
       'You need to grant location permission to see weather data for your location';
   static const openSettings = 'Open Settings';
