@@ -20,14 +20,16 @@ class SysModel {
       DateTime.fromMillisecondsSinceEpoch(sunrise! * 1000).time();
   String get sunsetTime =>
       DateTime.fromMillisecondsSinceEpoch(sunset! * 1000).time();
+  bool get isDayTime =>
+      DateTime.now()
+          .isAfter(DateTime.fromMillisecondsSinceEpoch(sunrise! * 1000)) &&
+      DateTime.now()
+          .isBefore(DateTime.fromMillisecondsSinceEpoch(sunset! * 1000));
 
-  String get getSunTitle => DateTime.now()
-          .isAfter(DateTime.fromMillisecondsSinceEpoch(sunrise! * 1000))
-      ? AppStrings.dontMissTheSunset
-      : AppStrings.riseAndShine;
+  String get getSunTitle =>
+      isDayTime ? AppStrings.dontMissTheSunset : AppStrings.riseAndShine;
 
-  String get getSunTime => DateTime.now()
-          .isAfter(DateTime.fromMillisecondsSinceEpoch(sunrise! * 1000))
+  String get getSunTime => isDayTime
       ? "Sunset will be at $sunsetTime"
       : "Sunrise will be at $sunriseTime";
 
