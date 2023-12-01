@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_app_flutter/utils/app_sizes.dart';
 
 import '../utils/app_colors.dart';
 
@@ -36,7 +37,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width ?? double.infinity,
+      width: width ?? AppSizes.getWidth(0.8),
       height: height,
       child: IgnorePointer(
         ignoring: loading || disabled,

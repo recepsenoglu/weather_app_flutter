@@ -39,7 +39,7 @@ class WeatherScreen extends StatelessWidget {
                         ? SystemUiOverlayStyle.dark
                         : SystemUiOverlayStyle.light,
               ),
-              body: _getBody(provider),
+              body: SizedBox(width: double.infinity, child: _getBody(provider)),
             ),
           );
         },
@@ -519,12 +519,21 @@ class DataCouldNotGet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: AppSizes.getHorizontalPadding(0.04),
+      padding: AppSizes.getHorizontalPadding(0.04).copyWith(
+        bottom: AppSizes.getHeight(0.1),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Icon(
+            Icons.error_outline,
+            size: AppSizes.getWidth(0.2),
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          const SizedBox(height: 15),
           Text(
             AppStrings.weatherDataCouldNotGet,
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   fontSize: AppSizes.getWidth(0.04),
                   color: Theme.of(context).colorScheme.onSurface,
@@ -553,12 +562,30 @@ class NoLocationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: AppSizes.getHorizontalPadding(0.04),
+      padding: AppSizes.getHorizontalPadding(0.04).copyWith(
+        bottom: AppSizes.getHeight(0.1),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Icon(
+            Icons.location_off,
+            size: AppSizes.getWidth(0.2),
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          const SizedBox(height: 15),
           Text(
             errorText,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  fontSize: AppSizes.getWidth(0.04),
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+          ),
+          const SizedBox(height: 15),
+          Text(
+            AppStrings.locationDescription,
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   fontSize: AppSizes.getWidth(0.04),
                   color: Theme.of(context).colorScheme.onSurface,
