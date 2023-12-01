@@ -16,6 +16,8 @@ class AppStrings {
 
   static const weatherDataCouldNotGet =
       'Weather data could not get. Please try again later';
+  static const checkYourInternetConnection =
+      'Please check your internet connection';
 
   static const riseAndShine = 'Rise and Shine';
   static const dontMissTheSunset = 'Don\'t miss the sunset';

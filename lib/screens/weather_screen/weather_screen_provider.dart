@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_app_flutter/utils/app_routes.dart';
+import 'package:weather_app_flutter/utils/app_strings.dart';
 
 import '../../models/current_weather_model.dart';
 import '../../models/daily_forecast_model.dart';
@@ -24,11 +26,12 @@ class WeatherScreenProvider with ChangeNotifier {
 
   bool loading = true;
   bool initialized = false;
+  bool error = false;
   String get district => _locationModel!.district ?? 'Dimension C-137';
 
-  bool get showLoading => loading && !initialized;
+  bool get showLoading => loading && (!initialized || error);
   bool get locationCouldNotGet => _locationModel == null;
-  bool get hasError => !hasCurrentWeather;
+  bool get hasError => !hasCurrentWeather || error;
 
   bool get hasCurrentWeather => currentWeatherModel != null;
   bool get hasHourlyForecast => hourlyForecastModel != null;
@@ -95,14 +98,33 @@ class WeatherScreenProvider with ChangeNotifier {
         _locationModel!.position.longitude,
       );
     } catch (e) {
+      _setError(true);
+      currentWeatherModel = null;
       log(e.toString());
+      _showSnackbar();
     }
+  }
+
+  void _showSnackbar() {
+    ScaffoldMessenger.of(AppRoutes.navigatorKey.currentContext!).showSnackBar(
+      const SnackBar(
+        content: Text(
+          AppStrings.checkYourInternetConnection,
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 5),
+      ),
+    );
   }
 
   Future<void> refresh() async {
     _setLoading(true);
     await _init();
     _setLoading(false);
+    if (hasCurrentWeather) _setError(false);
   }
 
   Future<void> changeLocation() async {
@@ -137,6 +159,11 @@ class WeatherScreenProvider with ChangeNotifier {
 
   void _setLoading(bool value) {
     loading = value;
+    notifyListeners();
+  }
+
+  void _setError(bool value) {
+    error = value;
     notifyListeners();
   }
 }
