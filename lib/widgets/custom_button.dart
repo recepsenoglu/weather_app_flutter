@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_app_flutter/utils/app_sizes.dart';
 
 import '../utils/app_colors.dart';
+import '../utils/app_sizes.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -44,14 +44,12 @@ class CustomButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            shadowColor: Colors.transparent,
             backgroundColor: color,
+            shadowColor: Colors.transparent,
             disabledBackgroundColor: Colors.grey,
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-            // maximumSize: Size(double.infinity, AppSizes.getWidth(0.14)),
-            // minimumSize: Size(double.infinity, AppSizes.getWidth(0.13)),
+            padding: AppSizes.getSymmetricPadding(0.04, 0.015),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(radius),
+              borderRadius: AppSizes.getRadius(radius),
               side: BorderSide(color: borderColor),
             ),
             elevation: elevation,
@@ -63,7 +61,10 @@ class CustomButton extends StatelessWidget {
                   child: Text(
                     text,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: AppSizes.getWidth(0.035),
+                    ),
                   ),
                 ),
         ),

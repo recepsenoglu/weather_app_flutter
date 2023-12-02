@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:weather_app_flutter/utils/app_sizes.dart';
 
 class ShimmerBox extends StatelessWidget {
   const ShimmerBox({
@@ -26,7 +27,7 @@ class ShimmerBox extends StatelessWidget {
             : Colors.grey.shade100,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: AppSizes.getRadius(14),
             color: isDarkMode
                 ? Theme.of(context).colorScheme.surface.withOpacity(0.8)
                 : Colors.grey.shade300,

@@ -5,6 +5,7 @@ class AppSizes {
   static late double _screenWidth;
   static late double _screenHeight;
   static late EdgeInsets _padding;
+  static BorderRadius borderRadius = BorderRadius.circular(0);
 
   static void init(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -20,6 +21,11 @@ class AppSizes {
   static double get height => _screenHeight;
   static double get bottomPadding => _padding.bottom;
   static double get topPadding => _padding.top;
+
+  static BorderRadius getRadius(double radius) {
+    final double value = _screenWidth < 500 ? radius : radius * 2;
+    return BorderRadius.circular(value);
+  }
 
   static double getWidth(double percent) {
     return _screenWidth * percent;

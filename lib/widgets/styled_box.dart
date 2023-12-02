@@ -15,7 +15,7 @@ class StyledBox extends StatelessWidget {
       margin: AppSizes.getVerticalPadding(0.01),
       padding: AppSizes.getSymmetricPadding(0.04, 0.015),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: AppSizes.getRadius(16),
         color: Theme.of(context).colorScheme.surface,
       ),
       child: child,

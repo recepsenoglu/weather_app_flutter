@@ -25,8 +25,8 @@ class WeatherScreen extends StatelessWidget {
       child: Consumer<WeatherScreenProvider>(
         builder: (context, provider, _) {
           return RefreshIndicator(
-            strokeWidth: 3,
-            displacement: 130,
+            strokeWidth: 4,
+            displacement: AppSizes.getHeight(0.15),
             onRefresh: provider.refresh,
             color: Theme.of(context).colorScheme.onSurface,
             triggerMode: RefreshIndicatorTriggerMode.onEdge,
@@ -580,7 +580,7 @@ class DataCouldNotGet extends StatelessWidget {
             size: AppSizes.getWidth(0.2),
             color: Theme.of(context).colorScheme.onSurface,
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: AppSizes.getHeight(0.03)),
           Text(
             AppStrings.weatherDataCouldNotGet,
             textAlign: TextAlign.center,
@@ -589,7 +589,7 @@ class DataCouldNotGet extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: AppSizes.getHeight(0.025)),
           CustomButton(
             text: AppStrings.refresh,
             onPressed: onRefresh,
@@ -623,25 +623,27 @@ class NoLocationWidget extends StatelessWidget {
             size: AppSizes.getWidth(0.2),
             color: Theme.of(context).colorScheme.onSurface,
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: AppSizes.getHeight(0.03)),
           Text(
             errorText,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   fontSize: AppSizes.getWidth(0.04),
+                  fontWeight: FontWeight.w600,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: AppSizes.getHeight(0.025)),
           Text(
             AppStrings.locationDescription,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   fontSize: AppSizes.getWidth(0.04),
+                  fontWeight: FontWeight.w400,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: AppSizes.getHeight(0.025)),
           CustomButton(
             onPressed: onRefresh,
             text: AppStrings.refresh,
