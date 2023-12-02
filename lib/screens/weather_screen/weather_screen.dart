@@ -90,93 +90,7 @@ class _WeatherScreenBody extends StatelessWidget {
             title: provider.currentWeatherModel!.sys?.getSunTitle,
             time: provider.currentWeatherModel!.sys?.getSunTime,
           ),
-          if (provider.hasDailyForecast)
-            StyledBox(
-              child: Container(
-                height: AppSizes.getHeight(0.3),
-                padding: AppSizes.getSymmetricPadding(0.02, 0.005),
-                child: ListView.separated(
-                  itemCount: provider.dailyForecastModel!.list.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: AppSizes.getHeight(0.012));
-                  },
-                  itemBuilder: (context, index) {
-                    final DailyForecastItemModel item =
-                        provider.dailyForecastModel!.list[index];
-                    return Row(
-                      children: [
-                        /// Day name
-                        Text(
-                          item.day,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge!
-                              .copyWith(
-                                fontSize: AppSizes.getWidth(0.042),
-                              ),
-                        ),
-                        const Spacer(),
-
-                        /// Rain percent
-                        SizedBox(
-                          width: AppSizes.getWidth(0.14),
-                          child: Row(
-                            children: [
-                              Icon(
-                                item.pop < 25
-                                    ? Icons.water_drop_outlined
-                                    : Icons.water_drop,
-                                size: AppSizes.getWidth(0.03),
-                                color: Colors.lightBlue,
-                              ),
-                              SizedBox(width: AppSizes.getWidth(0.01)),
-                              Text(
-                                item.popPercent,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall!
-                                    .copyWith(
-                                      fontSize: AppSizes.getWidth(0.03),
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        /// Day icon
-                        Image.network(
-                          item.dayIconUrl,
-                          width: AppSizes.getWidth(0.08),
-                          height: AppSizes.getWidth(0.08),
-                        ),
-
-                        /// Night icon
-                        Image.network(
-                          item.nightIconUrl,
-                          width: AppSizes.getWidth(0.08),
-                          height: AppSizes.getWidth(0.08),
-                        ),
-
-                        SizedBox(width: AppSizes.getWidth(0.02)),
-
-                        /// Min-Max temp
-                        Text(
-                          provider.currentWeatherModel!.main.minMaxTemperature
-                              .replaceAll(" /", ""),
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge!
-                              .copyWith(
-                                fontSize: AppSizes.getWidth(0.04),
-                              ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
+          DailyForecast(provider: provider),
           WeatherHighlights(
             infoList: provider.currentWeatherModel?.info,
             sunrise: provider.currentWeatherModel?.sys?.sunrise!
@@ -291,7 +205,7 @@ class HourlyForecast extends StatelessWidget {
             thickness: 0.3,
           ),
           SizedBox(
-            height: AppSizes.getHeight(0.14),
+            height: AppSizes.getWidth(0.28),
             child: ListView.builder(
               itemCount: 12,
               scrollDirection: Axis.horizontal,
@@ -323,7 +237,7 @@ class HourlyForecast extends StatelessWidget {
                               fontSize: AppSizes.getWidth(0.035),
                             ),
                       ),
-                      SizedBox(height: AppSizes.getHeight(0.02)),
+                      SizedBox(height: AppSizes.getWidth(0.03)),
                       Row(
                         children: [
                           Icon(
@@ -351,6 +265,99 @@ class HourlyForecast extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class DailyForecast extends StatelessWidget {
+  const DailyForecast({
+    super.key,
+    required this.provider,
+  });
+
+  final WeatherScreenProvider provider;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!provider.hasDailyForecast) return Container();
+
+    return StyledBox(
+      child: Container(
+        height: AppSizes.getWidth(0.62),
+        padding: AppSizes.getSymmetricPadding(0.02, 0.005),
+        child: ListView.separated(
+          itemCount: provider.dailyForecastModel!.list.length,
+          physics: const NeverScrollableScrollPhysics(),
+          separatorBuilder: (context, index) {
+            return SizedBox(height: AppSizes.getWidth(0.025));
+          },
+          itemBuilder: (context, index) {
+            final DailyForecastItemModel item =
+                provider.dailyForecastModel!.list[index];
+            return Row(
+              children: [
+                /// Day name
+                Text(
+                  item.day,
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        fontSize: AppSizes.getWidth(0.042),
+                      ),
+                ),
+                const Spacer(),
+
+                /// Rain percent
+                SizedBox(
+                  width: AppSizes.getWidth(0.14),
+                  child: Row(
+                    children: [
+                      Icon(
+                        item.pop < 25
+                            ? Icons.water_drop_outlined
+                            : Icons.water_drop,
+                        size: AppSizes.getWidth(0.03),
+                        color: Colors.lightBlue,
+                      ),
+                      SizedBox(width: AppSizes.getWidth(0.01)),
+                      Text(
+                        item.popPercent,
+                        style:
+                            Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                  fontSize: AppSizes.getWidth(0.03),
+                                ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                /// Day icon
+                Image.network(
+                  item.dayIconUrl,
+                  width: AppSizes.getWidth(0.08),
+                  height: AppSizes.getWidth(0.08),
+                ),
+
+                /// Night icon
+                Image.network(
+                  item.nightIconUrl,
+                  width: AppSizes.getWidth(0.08),
+                  height: AppSizes.getWidth(0.08),
+                ),
+
+                SizedBox(width: AppSizes.getWidth(0.02)),
+
+                /// Min-Max temp
+                Text(
+                  provider.currentWeatherModel!.main.minMaxTemperature
+                      .replaceAll(" /", ""),
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        fontSize: AppSizes.getWidth(0.04),
+                      ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -594,6 +601,7 @@ class DataCouldNotGet extends StatelessWidget {
     );
   }
 }
+
 class NoLocationWidget extends StatelessWidget {
   const NoLocationWidget(
       {super.key, required this.errorText, required this.onRefresh});
