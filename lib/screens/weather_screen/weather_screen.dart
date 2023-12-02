@@ -413,9 +413,13 @@ class WeatherHighlights extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (infoList == null) return Container();
-
+    final int length = infoList!.length + 1;
+    double neededWidth = 1;
+    if (length > 4) {
+      neededWidth = length > 6 ? 1.85 : 1.4;
+    }
     return SizedBox(
-      height: AppSizes.getWidth(1),
+      height: AppSizes.getWidth(neededWidth),
       child: GridView.count(
         crossAxisCount: 2,
         crossAxisSpacing: AppSizes.getHeight(0.02),
