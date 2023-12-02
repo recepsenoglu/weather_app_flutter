@@ -11,6 +11,7 @@ import '../../utils/app_strings.dart';
 import '../../utils/extensions.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/info_box.dart';
+import '../../widgets/shimmer_box.dart';
 import '../../widgets/styled_box.dart';
 import 'weather_screen_provider.dart';
 
@@ -48,8 +49,8 @@ class WeatherScreen extends StatelessWidget {
   }
 
   Widget _getBody(WeatherScreenProvider provider) {
-    if (provider.showLoading) return const LoadingWidget();
-    
+    if (provider.showLoading) return const LoadingShimmers();
+
     if (provider.locationCouldNotGet) {
       return NoLocationWidget(
           errorText: provider.errText, onRefresh: provider.refresh);
@@ -485,27 +486,71 @@ class WeatherHighlights extends StatelessWidget {
   }
 }
 
-class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({super.key});
+class LoadingShimmers extends StatelessWidget {
+  const LoadingShimmers({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: Container(
-        width: AppSizes.getWidth(0.09),
-        height: AppSizes.getWidth(0.09),
-        padding: AppSizes.getPadding(0.015),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Theme.of(context).colorScheme.surface,
-        ),
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
-      ),
-    );
+    return SingleChildScrollView(
+        padding: AppSizes.getSymmetricPadding(0.03, 0.00),
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: AppSizes.getHeight(0.06)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShimmerBox(
+                      width: AppSizes.getWidth(0.4),
+                      height: AppSizes.getWidth(0.15),
+                    ),
+                    SizedBox(height: AppSizes.getHeight(0.02)),
+                    ShimmerBox(
+                      width: AppSizes.getWidth(0.2),
+                      height: AppSizes.getWidth(0.05),
+                    ),
+                    SizedBox(height: AppSizes.getHeight(0.035)),
+                    ShimmerBox(
+                      width: AppSizes.getWidth(0.3),
+                      height: AppSizes.getWidth(0.05),
+                    ),
+                    SizedBox(height: AppSizes.getHeight(0.01)),
+                    ShimmerBox(
+                      width: AppSizes.getWidth(0.4),
+                      height: AppSizes.getWidth(0.05),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: AppSizes.getWidth(0.05)),
+                  child: ShimmerBox(
+                    width: AppSizes.getWidth(0.2),
+                    height: AppSizes.getWidth(0.2),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: AppSizes.getHeight(0.055)),
+            ShimmerBox(
+              width: double.infinity,
+              height: AppSizes.getWidth(0.45),
+            ),
+            SizedBox(height: AppSizes.getHeight(0.02)),
+            ShimmerBox(
+              width: double.infinity,
+              height: AppSizes.getWidth(0.23),
+            ),
+            SizedBox(height: AppSizes.getHeight(0.02)),
+            ShimmerBox(
+              width: double.infinity,
+              height: AppSizes.getWidth(0.6),
+            ),
+          ],
+        ));
   }
 }
 
@@ -549,7 +594,6 @@ class DataCouldNotGet extends StatelessWidget {
     );
   }
 }
-
 class NoLocationWidget extends StatelessWidget {
   const NoLocationWidget(
       {super.key, required this.errorText, required this.onRefresh});
