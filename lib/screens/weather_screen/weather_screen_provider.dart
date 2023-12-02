@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:weather_app_flutter/utils/app_routes.dart';
-import 'package:weather_app_flutter/utils/app_strings.dart';
 
 import '../../models/current_weather_model.dart';
 import '../../models/daily_forecast_model.dart';
@@ -11,6 +9,8 @@ import '../../models/hourly_forecast_model.dart';
 import '../../models/location_model.dart';
 import '../../services/api_service.dart';
 import '../../services/location_service.dart';
+import '../../utils/app_routes.dart';
+import '../../utils/app_strings.dart';
 
 class WeatherScreenProvider with ChangeNotifier {
   final LocationService _locationService = LocationService();
@@ -46,7 +46,7 @@ class WeatherScreenProvider with ChangeNotifier {
     bool initApiService = false,
   }) async {
     if (initApiService) _apiService = await ApiService.init();
-    if (!skipLocation) await _getLocation();
+    if (!skipLocation || _locationModel == null) await _getLocation();
     await _getCurrentWeather();
     await _getHourlyForecast();
     await _getDailyForecast();
@@ -98,31 +98,38 @@ class WeatherScreenProvider with ChangeNotifier {
         _locationModel!.position.longitude,
       );
     } catch (e) {
-      _setError(true);
-      currentWeatherModel = null;
       log(e.toString());
+      currentWeatherModel = null;
+      _setError(true);
       _showSnackbar();
     }
   }
 
+  void _hideSnackbar() {
+    ScaffoldMessenger.of(AppRoutes.navigatorKey.currentContext!)
+        .hideCurrentSnackBar();
+  }
+
   void _showSnackbar() {
+    _hideSnackbar();
+
     ScaffoldMessenger.of(AppRoutes.navigatorKey.currentContext!).showSnackBar(
       const SnackBar(
         content: Text(
-          AppStrings.checkYourInternetConnection,
+          AppStrings.somethingWentWrong,
           style: TextStyle(
             color: Colors.white,
           ),
         ),
         backgroundColor: Colors.red,
-        duration: Duration(seconds: 5),
       ),
     );
   }
 
   Future<void> refresh() async {
     _setLoading(true);
-    await _init();
+    await Future.delayed(const Duration(seconds: 1));
+    await _init(skipLocation: true);
     _setLoading(false);
     if (hasCurrentWeather) _setError(false);
   }
