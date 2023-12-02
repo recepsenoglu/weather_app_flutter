@@ -15,10 +15,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     AppSizes.init(context);
     return MaterialApp(
-      title: 'Weather Forecast',
+      title: 'Weather App',
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
       themeMode: AppThemes.themeMode,
+      debugShowCheckedModeBanner: false,
       navigatorKey: AppRoutes.navigatorKey,
       initialRoute: AppRoutes.initialRoute,
       onGenerateRoute: AppRoutes.generateRoute,
