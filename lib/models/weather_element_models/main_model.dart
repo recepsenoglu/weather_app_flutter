@@ -14,9 +14,8 @@ class MainModel {
   String get temperatureFixed => "${temp.toStringAsFixed(0)}°";
   String get minMaxTemperature =>
       "${tempMin.toStringAsFixed(0)}° / ${tempMax.toStringAsFixed(0)}°";
-  String get feelsLikeTemperature =>
-      "Feels like ${feelsLike.toStringAsFixed(0)}°";
-  String get lowestTemperature => "Low ${tempMin.toStringAsFixed(0)}°";
+  String get feelsLikeTemperature => "${feelsLike.toStringAsFixed(0)}°";
+  String get lowestTemperature => "${tempMin.toStringAsFixed(0)}°";
 
   MainModel({
     required this.temp,

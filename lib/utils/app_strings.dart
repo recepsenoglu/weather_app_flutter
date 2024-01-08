@@ -20,18 +20,4 @@ class AppStrings {
       'Please check your internet connection';
   static const somethingWentWrong = 'Something went wrong';
 
-  static const riseAndShine = 'Rise and Shine';
-  static const dontMissTheSunset = 'Don\'t miss the sunset';
-
-  static const today = 'Today';
-
-  static const days = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday'
-  ];
 }

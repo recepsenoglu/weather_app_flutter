@@ -8,41 +8,21 @@ import '../models/hourly_forecast_model.dart';
 
 class ApiService {
   late String apiKey;
+  String lang = "en";
 
-  static const String currentWeatherApiUrl =
-      "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}&units=metric";
-  static const String hourlyForecastApiUrl =
-      "https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}&units=metric";
+  static String currentWeatherApiUrl =
+      "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}&units=metric&lang={lang}";
+  static String hourlyForecastApiUrl =
+      "https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}&units=metric&lang={lang}";
 
   late final Dio dio;
-
-  Future<dynamic> getDailyForecast(double lat, double lon) async {
-    final String url = hourlyForecastApiUrl
-        .replaceAll('{lat}', lat.toString())
-        .replaceAll('{lon}', lon.toString())
-        .replaceAll('{API key}', apiKey);
-
-    final dynamic responseData;
-
-    try {
-      responseData = await _getData(url);
-      return responseData;
-    } catch (e) {
-      log(
-        "Error occurred while getting daily forecast data.",
-        name: "ApiService.getDailyForecast",
-        stackTrace: StackTrace.current,
-        error: e,
-      );
-      throw Exception(e);
-    }
-  }
 
   Future<HourlyForecastModel?> getHourlyForecast(double lat, double lon) async {
     final String url = hourlyForecastApiUrl
         .replaceAll('{lat}', lat.toString())
         .replaceAll('{lon}', lon.toString())
-        .replaceAll('{API key}', apiKey);
+        .replaceAll('{API key}', apiKey)
+        .replaceAll('{lang}', lang);
 
     final dynamic responseData;
 
@@ -64,7 +44,8 @@ class ApiService {
     final String url = currentWeatherApiUrl
         .replaceAll('{lat}', lat.toString())
         .replaceAll('{lon}', lon.toString())
-        .replaceAll('{API key}', apiKey);
+        .replaceAll('{API key}', apiKey)
+        .replaceAll('{lang}', lang);
 
     final dynamic responseData;
 
@@ -96,10 +77,11 @@ class ApiService {
     return await rootBundle.loadString('API_KEY.txt');
   }
 
-  static Future<ApiService> init() async {
+  static Future<ApiService> init({String lang = "en"}) async {
     final ApiService apiService = ApiService();
     apiService.dio = Dio();
     apiService.apiKey = await apiService.loadApiKey();
+    apiService.lang = lang;
     return apiService;
   }
 }

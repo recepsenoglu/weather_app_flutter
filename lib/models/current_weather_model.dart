@@ -19,12 +19,12 @@ class CurrentWeatherModel {
   List<InfoModel> get info {
     List<InfoModel> infoList = [
       InfoModel(
-        title: "Humidity",
+        title: "humidity",
         value: main.humidityString,
         image: AppImages.humidity.assetName,
       ),
       InfoModel(
-        title: "Wind",
+        title: "wind",
         value: wind.speedString,
         image: AppImages.wind.assetName,
       ),
@@ -34,7 +34,7 @@ class CurrentWeatherModel {
       infoList.insert(
         0,
         InfoModel(
-          title: "Rain",
+          title: "rain",
           value: rain!.rainVolume!,
           image: AppImages.rain.assetName,
         ),
@@ -45,7 +45,7 @@ class CurrentWeatherModel {
       infoList.insert(
         0,
         InfoModel(
-          title: "Snow",
+          title: "snow",
           value: snow!.snowVolume!,
           image: AppImages.snow.assetName,
         ),
@@ -56,7 +56,7 @@ class CurrentWeatherModel {
       infoList.insert(
         0,
         InfoModel(
-          title: "Visibility",
+          title: "visibility",
           value: "${((visibility ?? 10000) / 1000).toStringAsFixed(0)} km",
           image: AppImages.visibility.assetName,
         ),

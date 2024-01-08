@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -8,6 +9,7 @@ import '../../models/daily_forecast_model.dart';
 import '../../models/hourly_forecast_model.dart';
 import '../../models/location_model.dart';
 import '../../services/api_service.dart';
+import '../../services/localization_service.dart';
 import '../../services/location_service.dart';
 import '../../utils/app_routes.dart';
 import '../../utils/app_strings.dart';
@@ -41,11 +43,19 @@ class WeatherScreenProvider with ChangeNotifier {
     _init(initApiService: true);
   }
 
+  Future<void> changeLanguage(BuildContext context) async {
+    _apiService.lang = context.locale.languageCode == 'en' ? 'tr' : 'en';
+    refresh().then((value) => LocalizationManager.changeLanguage(context));
+  }
+
   Future<void> _init({
     bool skipLocation = false,
     bool initApiService = false,
   }) async {
-    if (initApiService) _apiService = await ApiService.init();
+    if (initApiService) {
+      _apiService = await ApiService.init(
+          lang: LocalizationManager.currentLocale.languageCode);
+    }
     if (!skipLocation || _locationModel == null) await _getLocation();
     await _getCurrentWeather();
     await _getHourlyForecast();

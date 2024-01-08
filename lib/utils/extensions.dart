@@ -1,4 +1,4 @@
-import 'app_strings.dart';
+
 
 extension StringExtension on String {
   String capitalizeFirst() {
@@ -22,8 +22,16 @@ extension DateTimeExtension on DateTime {
   }
 
   String getWeekday() {
-    if (weekday == DateTime.now().weekday) return AppStrings.today;
-    
-    return AppStrings.days[weekday - 1];
+    if (weekday == DateTime.now().weekday) return 'today';
+
+    return [
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+      'sunday',
+    ][weekday - 1];
   }
 }

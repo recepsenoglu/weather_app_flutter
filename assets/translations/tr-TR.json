@@ -1,0 +1,28 @@
+{
+    "humidity": "Nem",
+    "wind": "Rüzgar",
+    "rain": "Yağmur",
+    "snow": "Kar",
+    "visibility": "Görünürlük",
+    "sunrise": "Gün\ndoğumu",
+    "sunset": "Gün\nbatımı",
+
+    "dontMissTheSunset": "Günbatımını kaçırma",
+    "riseAndShine": "Haydi, günaydın!",
+    "sunRiseWillBeAt": "Güneş {}'da doğacak",
+    "sunSetWillBeAt": "Günbatımı saat {}'da olacak",
+
+    "today": "Bugün",
+    "monday": "Pazartesi",
+    "tuesday": "Salı",
+    "wednesday": "Çarşamba",
+    "thursday": "Perşembe",
+    "friday": "Cuma",
+    "saturday": "Cumartesi",
+    "sunday": "Pazar",
+
+    "low": "En düşük {}",
+    "feelsLike": "Hissedilen {}",
+
+    "weatherDataCouldNotGet": "Hava durumu bilgileri alınamadı, lütfen daha sonra tekrar deneyin"
+}

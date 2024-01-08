@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../models/daily_forecast_model.dart';
 import '../../models/hourly_forecast_model.dart';
 import '../../models/info_model.dart';
+import '../../models/weather_element_models/sys_model.dart';
 import '../../utils/app_images.dart';
 import '../../utils/app_sizes.dart';
 import '../../utils/app_strings.dart';
@@ -74,7 +76,10 @@ class _WeatherScreenBody extends StatelessWidget {
       physics: const ClampingScrollPhysics(),
       child: Column(
         children: [
-          SizedBox(height: AppSizes.getHeight(0.06)),
+          LanguageWidget(
+            loading: provider.loading,
+            changeLanguage: provider.changeLanguage,
+          ),
           CurrentWeather(
             location: provider.district,
             description: provider.currentWeatherModel!.weather.main,
@@ -86,10 +91,7 @@ class _WeatherScreenBody extends StatelessWidget {
           ),
           SizedBox(height: AppSizes.getHeight(0.04)),
           HourlyForecast(provider: provider),
-          RisesAndSetsInfo(
-            title: provider.currentWeatherModel!.sys?.getSunTitle,
-            time: provider.currentWeatherModel!.sys?.getSunTime,
-          ),
+          RisesAndSetsInfo(sys: provider.currentWeatherModel?.sys),
           DailyForecast(provider: provider),
           WeatherHighlights(
             infoList: provider.currentWeatherModel?.info,
@@ -99,6 +101,70 @@ class _WeatherScreenBody extends StatelessWidget {
                 .getHourFromTimestamp(),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class LanguageWidget extends StatelessWidget {
+  const LanguageWidget(
+      {super.key, required this.loading, required this.changeLanguage});
+
+  final bool loading;
+  final Function(BuildContext) changeLanguage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: AppSizes.getHeight(0.06),
+      margin: EdgeInsets.only(top: AppSizes.getHeight(0.01)),
+      child: Visibility(
+        visible: !loading,
+        replacement: Container(
+          padding: EdgeInsets.only(
+            top: AppSizes.getHeight(0.028),
+            bottom: AppSizes.getHeight(0.027),
+          ),
+          child: LinearProgressIndicator(
+            backgroundColor:
+                Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
+            valueColor: AlwaysStoppedAnimation<Color>(
+                Theme.of(context).colorScheme.onBackground),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              onPressed: loading ? null : () => changeLanguage(context),
+              style: TextButton.styleFrom(
+                elevation: 4,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    context.locale.languageCode == "en" ? "English" : "Türkçe",
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          fontSize: AppSizes.getWidth(0.04),
+                        ),
+                  ),
+                  SizedBox(width: AppSizes.getWidth(0.01)),
+                  Image.asset(
+                    context.locale.languageCode == "en"
+                        ? AppImages.en.assetName
+                        : AppImages.tr.assetName,
+                    width: AppSizes.getWidth(0.08),
+                    height: AppSizes.getWidth(0.08),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -162,7 +228,7 @@ class CurrentWeather extends StatelessWidget {
               ),
               SizedBox(height: AppSizes.getHeight(0.005)),
               Text(
-                "$minMaxTemp $feelsLikeTemp",
+                "$minMaxTemp • ${"feelsLike".tr(args: [feelsLikeTemp])}",
                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                       fontSize: AppSizes.getWidth(0.04),
                     ),
@@ -194,7 +260,9 @@ class HourlyForecast extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "${provider.currentWeatherModel?.weather.description.capitalizeFirst()}. ${provider.currentWeatherModel?.main.lowestTemperature}",
+            "${provider.currentWeatherModel?.weather.description.capitalizeFirst()}. ${"low".tr(args: [
+                  provider.currentWeatherModel?.main.lowestTemperature ?? "-"
+                ])}",
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   fontSize: AppSizes.getWidth(0.04),
                 ),
@@ -271,10 +339,7 @@ class HourlyForecast extends StatelessWidget {
 }
 
 class DailyForecast extends StatelessWidget {
-  const DailyForecast({
-    super.key,
-    required this.provider,
-  });
+  const DailyForecast({super.key, required this.provider});
 
   final WeatherScreenProvider provider;
 
@@ -297,9 +362,8 @@ class DailyForecast extends StatelessWidget {
                 provider.dailyForecastModel!.list[index];
             return Row(
               children: [
-                /// Day name
                 Text(
-                  item.day,
+                  item.day.tr(),
                   style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                         fontSize: AppSizes.getWidth(0.042),
                       ),
@@ -364,14 +428,13 @@ class DailyForecast extends StatelessWidget {
 }
 
 class RisesAndSetsInfo extends StatelessWidget {
-  const RisesAndSetsInfo({super.key, this.title, this.time});
+  const RisesAndSetsInfo({super.key, this.sys});
 
-  final String? title;
-  final String? time;
+  final SysModel? sys;
 
   @override
   Widget build(BuildContext context) {
-    if (time == null || title == null) return Container();
+    if (sys == null) return Container();
 
     return StyledBox(
       child: Padding(
@@ -379,14 +442,16 @@ class RisesAndSetsInfo extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              title!,
+              sys!.isDayTime ? 'dontMissTheSunset'.tr() : 'riseAndShine'.tr(),
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     fontSize: AppSizes.getWidth(0.04),
                   ),
             ),
             SizedBox(height: AppSizes.getHeight(0.002)),
             Text(
-              time!,
+              sys!.isDayTime
+                  ? 'sunSetWillBeAt'.tr(args: [sys!.sunsetTime])
+                  : 'sunRiseWillBeAt'.tr(args: [sys!.sunriseTime]),
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     fontSize: AppSizes.getWidth(0.04),
                   ),
@@ -430,8 +495,8 @@ class WeatherHighlights extends StatelessWidget {
             if (index < infoList!.length) {
               final InfoModel info = infoList![index];
               return InfoBox(
+                title: info.title.tr(),
                 image: info.image,
-                title: info.title,
                 value: info.value,
               );
             }
@@ -446,14 +511,15 @@ class WeatherHighlights extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Sunrise",
+                        "sunrise".tr(),
                         style:
                             Theme.of(context).textTheme.headlineLarge!.copyWith(
                                   fontSize: AppSizes.getWidth(0.038),
                                 ),
                       ),
                       Text(
-                        "Sunset",
+                        "sunset".tr(),
+                        textAlign: TextAlign.end,
                         style:
                             Theme.of(context).textTheme.headlineLarge!.copyWith(
                                   fontSize: AppSizes.getWidth(0.038),
@@ -586,7 +652,7 @@ class DataCouldNotGet extends StatelessWidget {
           ),
           SizedBox(height: AppSizes.getHeight(0.03)),
           Text(
-            AppStrings.weatherDataCouldNotGet,
+            'weatherDataCouldNotGet'.tr(),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   fontSize: AppSizes.getWidth(0.04),

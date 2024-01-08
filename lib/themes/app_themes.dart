@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
 class AppThemes {
-  static get themeMode => DateTime.now().hour > 6 && DateTime.now().hour < 18 
+  static get themeMode => DateTime.now().hour > 6 && DateTime.now().hour < 18
       ? ThemeMode.dark
       : ThemeMode.light;
 

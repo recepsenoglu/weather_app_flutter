@@ -1,4 +1,3 @@
-import '../../utils/app_strings.dart';
 import '../../utils/extensions.dart';
 
 class SysModel {
@@ -25,13 +24,6 @@ class SysModel {
           .isAfter(DateTime.fromMillisecondsSinceEpoch(sunrise! * 1000)) &&
       DateTime.now()
           .isBefore(DateTime.fromMillisecondsSinceEpoch(sunset! * 1000));
-
-  String get getSunTitle =>
-      isDayTime ? AppStrings.dontMissTheSunset : AppStrings.riseAndShine;
-
-  String get getSunTime => isDayTime
-      ? "Sunset will be at $sunsetTime"
-      : "Sunrise will be at $sunriseTime";
 
   factory SysModel.fromJson(Map<String, dynamic> json) {
     return SysModel(

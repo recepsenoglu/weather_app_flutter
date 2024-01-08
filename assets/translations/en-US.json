@@ -1,0 +1,28 @@
+{
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "rain": "Rain",
+    "snow": "Snow",
+    "visibility": "Visibility",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset",
+
+    "dontMissTheSunset": "Don't miss the sunset",
+    "riseAndShine": "Rise and shine",
+    "sunRiseWillBeAt": "Sun rise will be at {}",
+    "sunSetWillBeAt": "Sun set will be at {}",
+
+    "today": "Today",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+
+    "low": "Low {}",
+    "feelsLike": "Feels like {}",
+
+    "weatherDataCouldNotGet": "Weather data could not get. Please try again later"
+}

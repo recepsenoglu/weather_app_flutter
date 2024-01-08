@@ -5,6 +5,8 @@ enum AppImages {
   snow,
   humidity,
   visibility,
+  tr,
+  en,
 }
 
 extension AppImagesExtension on AppImages {
@@ -22,6 +24,10 @@ extension AppImagesExtension on AppImages {
         return "assets/images/humidity.png";
       case AppImages.visibility:
         return "assets/images/visibility.png";
+      case AppImages.tr:
+        return "assets/images/tr.png";
+      case AppImages.en:
+        return "assets/images/en.png";
     }
   }
 }
