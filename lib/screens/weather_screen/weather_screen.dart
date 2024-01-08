@@ -206,7 +206,7 @@ class CurrentWeather extends StatelessWidget {
               ),
               SizedBox(height: AppSizes.getHeight(0.004)),
               Text(
-                description,
+                description.toLowerCase().tr(),
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                       fontSize: AppSizes.getWidth(0.05),
                     ),

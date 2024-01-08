@@ -21,6 +21,20 @@
     "saturday": "Saturday",
     "sunday": "Sunday",
 
+    "thunderstorm": "Thunderstorm",
+    "drizzle": "Drizzle",
+    "mist": "Mist",
+    "smoke": "Smoke",
+    "haze": "Haze",
+    "dust": "Dust",
+    "fog": "Fog",
+    "sand": "Sand",
+    "ash": "Ash",
+    "squall": "Squall",
+    "tornado": "Tornado",
+    "clear": "Clear",
+    "clouds": "Clouds",
+
     "low": "Low {}",
     "feelsLike": "Feels like {}",
 

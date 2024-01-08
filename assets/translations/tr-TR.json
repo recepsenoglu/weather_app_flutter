@@ -21,6 +21,20 @@
     "saturday": "Cumartesi",
     "sunday": "Pazar",
 
+    "thunderstorm": "Gök gürültülü fırtına",
+    "drizzle": "Çiseleme",
+    "mist": "Sis",
+    "smoke": "Duman",
+    "haze": "Hafif sis",
+    "dust": "Toz",
+    "fog": "Sis",
+    "sand": "Kum",
+    "ash": "Kül",
+    "squall": "Sağanak yağış",
+    "tornado": "Tornado",
+    "clear": "Açık",
+    "clouds": "Bulutlu",
+
     "low": "En düşük {}",
     "feelsLike": "Hissedilen {}",
 
