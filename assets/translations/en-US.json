@@ -38,5 +38,15 @@
     "low": "Low {}",
     "feelsLike": "Feels like {}",
 
-    "weatherDataCouldNotGet": "Weather data could not get. Please try again later"
+    "cancel": "Cancel",
+    "retry": "Retry",
+    "openSettings": "Open settings",
+    "permissionDenied": "Permission denied",
+    "somethingWentWrong": "Something went wrong",
+    "locationServiceDisabled": "Location service disabled",
+    "locationPermissionDenied": "Location permission denied",
+    "locationPermissionDeniedForever": "Location permission denied forever",
+    "weatherDataCouldNotGet": "Weather data could not get. Please try again later",
+    "openSettingsDescription": "Please open settings and allow location permission",
+    "locationDescription": "You need to grant location permission to see weather data for your location"
 }

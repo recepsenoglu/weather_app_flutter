@@ -1,10 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../models/location_model.dart';
 import '../utils/app_dialogs.dart';
-import '../utils/app_strings.dart';
 
 class LocationService {
   Future<LocationModel?> init() async {
@@ -31,10 +31,10 @@ class LocationService {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       bool? openSettings = await AppDialogs.showConfirmationDialog(
-        title: AppStrings.locationServiceDisabled,
-        message: AppStrings.openSettingsDescriptionEnableLocationService,
-        positiveButtonText: AppStrings.openSettings,
-        negativeButtonText: AppStrings.cancel,
+        title: "locationServiceDisabled".tr(),
+        message: "openSettingsDescription".tr(),
+        positiveButtonText: "openSettings".tr(),
+        negativeButtonText: "cancel".tr(),
       );
       if (openSettings == true) {
         await openLocationSettings();
@@ -52,25 +52,25 @@ class LocationService {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error(const PermissionDeniedException(
-            AppStrings.locationPermissionDenied));
+        return Future.error(
+            PermissionDeniedException("locationPermissionDenied".tr()));
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       bool? openSettings = await AppDialogs.showConfirmationDialog(
-        title: AppStrings.permissionDenied,
-        message: AppStrings.openSettingsDescription,
-        positiveButtonText: AppStrings.openSettings,
-        negativeButtonText: AppStrings.cancel,
+        title: "permissionDenied".tr(),
+        message: "openSettingsDescription".tr(),
+        positiveButtonText: "openSettings".tr(),
+        negativeButtonText: "cancel".tr(),
       );
       if (openSettings == true) {
         await openLocationSettings();
         permission = await Geolocator.checkPermission();
       }
       if (permission == LocationPermission.deniedForever) {
-        return Future.error(const PermissionDeniedException(
-            AppStrings.locationPermissionDeniedForever));
+        return Future.error(
+            PermissionDeniedException("locationPermissionDeniedForever".tr()));
       }
     }
 
@@ -86,7 +86,8 @@ class LocationService {
       double latitude, double longitude) async {
     Placemark? place;
 
-    await placemarkFromCoordinates(latitude, longitude, localeIdentifier: 'en_US')
+    await placemarkFromCoordinates(latitude, longitude,
+            localeIdentifier: 'en_US')
         .then((placemarks) {
       place = placemarks[0];
     }).catchError((e) {

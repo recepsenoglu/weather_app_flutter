@@ -12,7 +12,6 @@ import '../../services/api_service.dart';
 import '../../services/localization_service.dart';
 import '../../services/location_service.dart';
 import '../../utils/app_routes.dart';
-import '../../utils/app_strings.dart';
 
 class WeatherScreenProvider with ChangeNotifier {
   final LocationService _locationService = LocationService();
@@ -124,10 +123,10 @@ class WeatherScreenProvider with ChangeNotifier {
     _hideSnackbar();
 
     ScaffoldMessenger.of(AppRoutes.navigatorKey.currentContext!).showSnackBar(
-      const SnackBar(
+      SnackBar(
         content: Text(
-          AppStrings.somethingWentWrong,
-          style: TextStyle(
+          "somethingWentWrong".tr(),
+          style: const TextStyle(
             color: Colors.white,
           ),
         ),

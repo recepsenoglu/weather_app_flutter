@@ -9,7 +9,6 @@ import '../../models/info_model.dart';
 import '../../models/weather_element_models/sys_model.dart';
 import '../../utils/app_images.dart';
 import '../../utils/app_sizes.dart';
-import '../../utils/app_strings.dart';
 import '../../utils/extensions.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/info_box.dart';
@@ -661,7 +660,7 @@ class DataCouldNotGet extends StatelessWidget {
           ),
           SizedBox(height: AppSizes.getHeight(0.025)),
           CustomButton(
-            text: AppStrings.refresh,
+            text: "retry".tr(),
             onPressed: onRefresh,
             color: Theme.of(context).colorScheme.onSurface,
             textColor: Theme.of(context).colorScheme.surface,
@@ -705,7 +704,7 @@ class NoLocationWidget extends StatelessWidget {
           ),
           SizedBox(height: AppSizes.getHeight(0.025)),
           Text(
-            AppStrings.locationDescription,
+            "locationDescription".tr(),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   fontSize: AppSizes.getWidth(0.04),
@@ -716,7 +715,7 @@ class NoLocationWidget extends StatelessWidget {
           SizedBox(height: AppSizes.getHeight(0.025)),
           CustomButton(
             onPressed: onRefresh,
-            text: AppStrings.refresh,
+            text: "retry".tr(),
             color: Theme.of(context).colorScheme.onSurface,
             textColor: Theme.of(context).colorScheme.surface,
           ),

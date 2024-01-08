@@ -38,5 +38,15 @@
     "low": "En düşük {}",
     "feelsLike": "Hissedilen {}",
 
-    "weatherDataCouldNotGet": "Hava durumu bilgileri alınamadı, lütfen daha sonra tekrar deneyin"
+    "cancel": "İptal",
+    "retry": "Tekrar dene",
+    "openSettings": "Ayarları aç",
+    "permissionDenied": "İzin reddedildi",
+    "somethingWentWrong": "Bir şeyler ters gitti",
+    "locationServiceDisabled": "Konum servisi kapalı",
+    "locationPermissionDenied": "Konum izni reddedildi",
+    "locationPermissionDeniedForever": "Konum izni kalıcı olarak reddedildi",
+    "weatherDataCouldNotGet": "Hava durumu bilgileri alınamadı, lütfen daha sonra tekrar deneyin",
+    "openSettingsDescription": "Uygulama ayarlarından konum iznini açabilirsiniz",
+    "locationDescription": "Konumunuzu almak için konum izni gerekiyor"
 }

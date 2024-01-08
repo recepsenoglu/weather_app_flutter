@@ -8,7 +8,7 @@ class LocalizationManager {
         Locale('en', 'US'),
         Locale('tr', 'TR'),
       ];
-  static Locale get fallbackLocale => supportedLocales.first;
+  static Locale get fallbackLocale => supportedLocales.last;
 
   static Locale get currentLocale =>
       EasyLocalization.of(AppRoutes.navigatorKey.currentContext!)!.locale;
