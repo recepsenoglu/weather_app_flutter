@@ -86,9 +86,10 @@ class LocationService {
       double latitude, double longitude) async {
     Placemark? place;
 
-    await placemarkFromCoordinates(latitude, longitude,
-            localeIdentifier: 'en_US')
-        .then((placemarks) {
+    await placemarkFromCoordinates(
+      latitude,
+      longitude,
+    ).then((placemarks) {
       place = placemarks[0];
     }).catchError((e) {
       debugPrint(e.toString());
